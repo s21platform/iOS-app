@@ -12,8 +12,7 @@ class MainTabBarController: UITabBarController {
 
         let feedVC = UINavigationController(rootViewController: FeedViewController())
         let searchVC = UINavigationController(rootViewController: SearchViewController())
-        let profileVC = UINavigationController(rootViewController: ProfileViewController(userProfile: UserProfile(nickname: "TEST", avatar: "https://storage.yandexcloud.net/space21/avatars/default/logo-discord.jpeg", name: nil, surname: nil, birthdate: nil, phone: nil, city: nil, telegram: nil, git: nil, os: nil, work: nil, university: nil, skills: nil, hobbies: nil)))
-        
+        let profileVC = UINavigationController(rootViewController: ProfileViewController(userProfile: nil))
      
      
         feedVC.tabBarItem.title = "Лента"

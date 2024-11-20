@@ -32,43 +32,40 @@ class ProfileView: UIView {
     
      let nameLabel = TextLabel(text: StringConstants.Profile.name)
     
-    private let birthLabel = TextLabel(text: StringConstants.Profile.birthDate)
+     let birthLabel = TextLabel(text: StringConstants.Profile.birthDate)
     
-    private let cityLabel = TextLabel(text: StringConstants.Profile.city)
+     let cityLabel = TextLabel(text: StringConstants.Profile.city)
     
-    private let tgLabel = TextLabel(text: StringConstants.Profile.tg)
+     let tgLabel = TextLabel(text: StringConstants.Profile.tg)
     
-    private let githubLabel = TextLabel(text: StringConstants.Profile.github)
+     let githubLabel = TextLabel(text: StringConstants.Profile.github)
     
-    private let osLabel = TextLabel(text: StringConstants.Profile.os)
+     let osLabel = TextLabel(text: StringConstants.Profile.os)
     
-    private let workLabel = TextLabel(text: StringConstants.Profile.workPlace)
+     let workLabel = TextLabel(text: StringConstants.Profile.workPlace)
     
-    private let studyLabel = TextLabel(text: StringConstants.Profile.studyPlace)
+     let studyLabel = TextLabel(text: StringConstants.Profile.studyPlace)
     
-    private let skillsLabel = TextLabel(text: StringConstants.Profile.skills)
+     let skillsLabel = TextLabel(text: StringConstants.Profile.skills)
     
-    private let hobbiesLabel = TextLabel(text: StringConstants.Profile.hobby)
+     let hobbiesLabel = TextLabel(text: StringConstants.Profile.hobby)
     
-    
-    
-    
-     lazy var nameField = CustomTextField(placeholderText: userProfile.nickname)
-    private lazy var birthField = CustomTextField(placeholderText:  userProfile.birthdate ?? "")
-    private lazy var cityField = CustomTextField(placeholderText: userProfile.city ?? "")
-    private lazy var tgField = CustomTextField(placeholderText: userProfile.telegram ?? "")
+     lazy var nameField = CustomTextField(placeholderText: "")
+     lazy var birthField = CustomTextField(placeholderText:  "")
+     lazy var cityField = CustomTextField(placeholderText: "")
+     lazy var tgField = CustomTextField(placeholderText: "")
     
     lazy var nameStack = LabelTextFieldStackView(arrangedSubviews: [nameLabel, nameField ])
-    private lazy var cityStack = LabelTextFieldStackView(arrangedSubviews: [cityLabel, cityField ])
-    private lazy var birthStack = LabelTextFieldStackView(arrangedSubviews: [birthLabel, birthField ])
-    private lazy var tgStack = LabelTextFieldStackView(arrangedSubviews: [tgLabel, tgField ])
+     lazy var cityStack = LabelTextFieldStackView(arrangedSubviews: [cityLabel, cityField ])
+     lazy var birthStack = LabelTextFieldStackView(arrangedSubviews: [birthLabel, birthField ])
+     lazy var tgStack = LabelTextFieldStackView(arrangedSubviews: [tgLabel, tgField ])
     
-    private lazy var githubField = CustomTextField(placeholderText:  userProfile.birthdate ?? "")
-    private lazy var OSField = CustomTextField(placeholderText:  userProfile.birthdate ?? "")
-    private lazy var workField = CustomTextField(placeholderText:  userProfile.birthdate ?? "")
-    private lazy var studyField = CustomTextField(placeholderText:  userProfile.birthdate ?? "")
-    private lazy var skillsField = CustomTextField(placeholderText:  userProfile.birthdate ?? "")
-    private lazy var hobbiesField = CustomTextField(placeholderText:  userProfile.birthdate ?? "")
+     lazy var githubField = CustomTextField(placeholderText:  "")
+     lazy var OSField = CustomTextField(placeholderText:  "")
+     lazy var workField = CustomTextField(placeholderText: "")
+     lazy var studyField = CustomTextField(placeholderText: "")
+    lazy var skillsField = CustomTextField(placeholderText:  "")
+    lazy var hobbiesField = CustomTextField(placeholderText:  "")
     
     private lazy var githubStack = LabelTextFieldStackView(arrangedSubviews: [githubLabel, githubField ])
     private lazy var osStack = LabelTextFieldStackView(arrangedSubviews: [osLabel, OSField ])
@@ -96,9 +93,9 @@ class ProfileView: UIView {
                                              alignment: .fill,
                                              distribution: .equalSpacing)
     
-    var userProfile: UserProfile
+    var userProfile: UserProfile?
 
-    init(userProfile: UserProfile) {
+    init(userProfile: UserProfile?) {
         self.userProfile = userProfile
         super.init(frame: .zero)
         setUpView()

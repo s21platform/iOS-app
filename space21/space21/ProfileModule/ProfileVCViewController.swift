@@ -8,12 +8,12 @@
 import UIKit
 
 class ProfileViewController: UIViewController {
-    var userProfile: UserProfile
+    var userProfile: UserProfile?
     
     let onboardingView = OnboardingView()
-    lazy var profileView = ProfileView(userProfile: userProfile)
+    lazy var profileView = ProfileView(userProfile: nil)
     
-    init(userProfile: UserProfile) {
+    init(userProfile: UserProfile?) {
         self.userProfile = userProfile
         super.init(nibName: nil, bundle: nil)
     }
@@ -24,8 +24,11 @@ class ProfileViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        let loadedUser = loadUserSettings()
+       
         if let jwt = NetworkManager.shared.getJWT() {
-            setUpProfile(userProfile: userProfile)
+            setUpProfile(userProfile: loadedUser)
            
         } else {
             setUpOnboarding()
@@ -43,7 +46,8 @@ class ProfileViewController: UIViewController {
       
     }
     
-    func setUpProfile(userProfile: UserProfile) {
+    func setUpProfile(userProfile: UserProfile?) {
+        guard let userProfile = userProfile else { return }
         onboardingView.isHidden = true
         profileView.isHidden = false
         let avatarURL = userProfile.avatar
@@ -63,6 +67,15 @@ class ProfileViewController: UIViewController {
         ])
         
         profileView.nameField.text = userProfile.nickname
+        profileView.birthField.text = userProfile.birthdate
+        profileView.cityField.text = userProfile.city
+        profileView.tgField.text = userProfile.telegram
+        profileView.githubField.text = userProfile.git
+        profileView.OSField.text = userProfile.os
+        profileView.workField.text = userProfile.work
+        profileView.studyField.text = userProfile.university
+        profileView.skillsField.text = userProfile.skills?.first
+        profileView.hobbiesField.text = userProfile.hobbies?.first
         print(userProfile)
     }
     
@@ -74,6 +87,32 @@ class ProfileViewController: UIViewController {
             onboardingView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             onboardingView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
+    }
+    func saveUserSettings(_ settings: UserProfile) {
+        let defaults = UserDefaults.standard
+        let encoder = JSONEncoder()
+        
+        do {
+            let data = try encoder.encode(settings)
+            defaults.set(data, forKey: "UserSettings")
+        } catch {
+            print("Failed to encode settings: \(error)")
+        }
+    }
+    
+    func loadUserSettings() -> UserProfile? {
+        let defaults = UserDefaults.standard
+        
+        guard let data = defaults.data(forKey: "UserSettings") else { return nil }
+        
+        let decoder = JSONDecoder()
+        do {
+            let settings = try decoder.decode(UserProfile.self, from: data)
+            return settings
+        } catch {
+            print("Failed to decode settings: \(error)")
+            return nil
+        }
     }
     
     @objc func loginButtonTapped() {
@@ -91,6 +130,8 @@ class ProfileViewController: UIViewController {
                     NetworkManager.shared.getProfile(username: login) { result in
                         switch result {
                         case .success(let userProfile):
+                            self.saveUserSettings(userProfile)
+
                             self.setUpProfile(userProfile: userProfile)
                             
                         case .failure(let error):
