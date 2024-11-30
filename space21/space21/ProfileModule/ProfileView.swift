@@ -64,8 +64,8 @@ class ProfileView: UIView {
      lazy var OSField = CustomTextField(placeholderText:  "")
      lazy var workField = CustomTextField(placeholderText: "")
      lazy var studyField = CustomTextField(placeholderText: "")
-    lazy var skillsField = CustomTextField(placeholderText:  "")
-    lazy var hobbiesField = CustomTextField(placeholderText:  "")
+    lazy var skillsField = CustomTextField(placeholderText:  "Git, Kafka, Docker")
+    lazy var hobbiesField = CustomTextField(placeholderText:  "Горные лыжи, Бег, книги")
     
     private lazy var githubStack = LabelTextFieldStackView(arrangedSubviews: [githubLabel, githubField ])
     private lazy var osStack = LabelTextFieldStackView(arrangedSubviews: [osLabel, OSField ])

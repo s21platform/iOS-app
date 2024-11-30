@@ -135,19 +135,67 @@ class ProfileViewController: UIViewController {
                             self.setUpProfile(userProfile: userProfile)
                             
                         case .failure(let error):
-                            print("Error: \(error.localizedDescription)")
-                            
+                            let errorMessage = self.getErrorMessage(from: error)
+                            self.presentALert(with: errorMessage)
                         }
                     }
     
                 case .failure(let error):
-                    self.presentALert(error.localizedDescription)
+                    let errorMessage = self.getErrorMessage(from: error)
+                    self.presentALert(with: errorMessage)
                 }
             }
     
         }
     
-    private func presentALert(_ error: String ) {
+    func getErrorMessage(from error: Error) -> String {
+       
+        if let urlError = error as? URLError {
+            // Обработка сетевых ошибок
+            switch urlError.code {
+            case .notConnectedToInternet:
+                return "Отсутствует подключение к интернету. Проверьте сеть и попробуйте снова."
+            case .timedOut:
+                return "Время ожидания истекло. Попробуйте позже."
+            case .cannotFindHost:
+                return "Не удается найти сервер. Проверьте адрес URL."
+            case .cannotConnectToHost:
+                return "Не удается подключиться к серверу. Попробуйте позже."
+            case .networkConnectionLost:
+                return "Сетевое соединение было потеряно. Переподключитесь и попробуйте снова."
+            default:
+                return "Сетевая ошибка"
+            }
+        }
+        if let nsError = error as? NSError {
+            // Если домен пустой -  ошибка HTTP-статуса
+            if nsError.domain.isEmpty {
+                switch nsError.code {
+                case 400:
+                    return "Некорректный запрос. Проверьте данные и попробуйте снова."
+                case 401:
+                    return "Неавторизованно. Пожалуйста, выполните вход для доступа."
+                case 403:
+                    return "Доступ запрещен. У вас нет прав для выполнения этого действия."
+                case 404:
+                    return "Ресурс не найден. Проверьте URL и попробуйте снова."
+                case 500:
+                    return "Внутренняя ошибка сервера. Попробуйте позже."
+                case 502:
+                    return "Ошибка шлюза. Сервер получил неверный ответ. Попробуйте позже."
+                case 503:
+                    return "Сервер недоступен. Попробуйте позже."
+                default:
+                    return "HTTP ошибка"
+                }
+            }
+        }
+        
+        return "Произошла неожиданная ошибка: \(error.localizedDescription)"
+    }
+
+    
+    private func presentALert(with error: String ) {
         DispatchQueue.main.async {
             let alertVC = GFAlertVC(alertTitle: "Возникла ошибка",
                                     message: error,
